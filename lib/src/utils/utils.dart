@@ -12,7 +12,7 @@ void showToast2(String texto, Color color) {
 obtenerFecha(String date) {
   var fecha = DateTime.parse(date);
 
-  final DateFormat fech = new DateFormat('dd MMM yyyy', 'es');
+  final DateFormat fech = new DateFormat('dd MMMM yyyy', 'es');
 
   return fech.format(fecha);
 }

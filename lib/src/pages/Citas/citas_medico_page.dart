@@ -1,6 +1,7 @@
 import 'package:clinica_app/src/models/data_model.dart';
 import 'package:clinica_app/src/theme/theme.dart';
 import 'package:clinica_app/src/utils/responsive.dart';
+import 'package:clinica_app/src/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -10,7 +11,7 @@ class CitasMedicoPage extends StatelessWidget {
   final String servicio;
   final String icon;
   const CitasMedicoPage({Key key, @required this.medico, @required this.servicio, @required this.icon}) : super(key: key);
-
+  static final _changeData = ChangeDate();
   @override
   Widget build(BuildContext context) {
     final responsive = Responsive.of(context);
@@ -48,40 +49,52 @@ class CitasMedicoPage extends StatelessWidget {
               ],
             ),
           ),
-          TableCalendar(
-            calendarFormat: CalendarFormat.week,
-            startingDayOfWeek: StartingDayOfWeek.monday,
-            locale: 'es_ES',
-            firstDay: DateTime.utc(2010, 10, 16),
-            lastDay: DateTime.utc(2030, 3, 14),
-            focusedDay: DateTime.now(),
-            headerStyle: HeaderStyle(
-              titleCentered: true,
-              formatButtonVisible: false,
-              titleTextStyle: TextStyle(color: Colors.white, fontSize: responsive.ip(2.3)),
-              leftChevronIcon: Icon(
-                Icons.arrow_back_ios,
-                color: Colors.white,
-                size: responsive.ip(2),
-              ),
-              rightChevronIcon: Icon(
-                Icons.arrow_forward_ios,
-                color: Colors.white,
-                size: responsive.ip(2),
-              ),
-            ),
-            calendarStyle: CalendarStyle(
-              todayDecoration: BoxDecoration(shape: BoxShape.circle, color: ColorsApp.greenClinica),
-              selectedDecoration: BoxDecoration(shape: BoxShape.circle, color: ColorsApp.greenClinica),
-              weekendTextStyle: TextStyle(
-                color: Colors.white,
-              ),
-              defaultTextStyle: TextStyle(
-                color: Colors.white,
-              ),
-            ),
-            daysOfWeekStyle: DaysOfWeekStyle(weekendStyle: TextStyle(color: Colors.white), weekdayStyle: TextStyle(color: Colors.white)),
-          ),
+          AnimatedBuilder(
+              animation: _changeData,
+              builder: (context, _) {
+                return TableCalendar(
+                  calendarFormat: CalendarFormat.week,
+                  startingDayOfWeek: StartingDayOfWeek.monday,
+                  locale: 'es_ES',
+                  firstDay: DateTime.utc(2018, 10, 16),
+                  lastDay: DateTime.utc(2030, 3, 14),
+                  focusedDay: _changeData.focusedDay,
+                  selectedDayPredicate: (date) {
+                    return isSameDay(_changeData.selectedDay, date);
+                  },
+                  onDaySelected: (DateTime selectDate, DateTime focusDay) {
+                    _changeData.onDaySelected(selectDate, focusDay);
+                  },
+                  onPageChanged: (focusedDay) {
+                    _changeData.focusedDay = focusedDay;
+                  },
+                  headerStyle: HeaderStyle(
+                    titleCentered: true,
+                    formatButtonVisible: false,
+                    titleTextStyle: TextStyle(color: Colors.white, fontSize: responsive.ip(2.3)),
+                    leftChevronIcon: Icon(
+                      Icons.arrow_back_ios,
+                      color: Colors.white,
+                      size: responsive.ip(2),
+                    ),
+                    rightChevronIcon: Icon(
+                      Icons.arrow_forward_ios,
+                      color: Colors.white,
+                      size: responsive.ip(2),
+                    ),
+                  ),
+                  calendarStyle: CalendarStyle(
+                    selectedDecoration: BoxDecoration(shape: BoxShape.circle, color: ColorsApp.greenClinica),
+                    weekendTextStyle: TextStyle(
+                      color: Colors.white,
+                    ),
+                    defaultTextStyle: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                  daysOfWeekStyle: DaysOfWeekStyle(weekendStyle: TextStyle(color: Colors.white), weekdayStyle: TextStyle(color: Colors.white)),
+                );
+              }),
           SizedBox(
             height: responsive.hp(1),
           ),
@@ -94,10 +107,14 @@ class CitasMedicoPage extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      Text(
-                        "17 agosto 2021",
-                        style: TextStyle(color: Colors.grey),
-                      )
+                      AnimatedBuilder(
+                          animation: _changeData,
+                          builder: (context, _) {
+                            return Text(
+                              "${obtenerFecha(_changeData.focusedDay.toString())}",
+                              style: TextStyle(color: Colors.grey),
+                            );
+                          })
                     ],
                   ),
                   SizedBox(
@@ -227,5 +244,18 @@ class CitasMedicoPage extends StatelessWidget {
         )
       ],
     );
+  }
+}
+
+class ChangeDate extends ChangeNotifier {
+  DateTime focusedDay = DateTime.now();
+  DateTime selectedDay;
+
+  void onDaySelected(DateTime selectDay, DateTime focusDay) {
+    if (!isSameDay(selectDay, focusedDay)) {
+      selectedDay = selectDay;
+      focusedDay = focusDay;
+      notifyListeners();
+    }
   }
 }
