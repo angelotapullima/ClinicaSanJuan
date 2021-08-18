@@ -134,7 +134,7 @@ class InicioPage extends StatelessWidget {
                             style: TextStyle(fontSize: responsive.ip(2), color: Colors.white, fontWeight: FontWeight.w500),
                           ),
                           Text(
-                            "Andrés Tapullima",
+                            "Patricio Lopez",
                             style: TextStyle(fontSize: responsive.ip(2.5), color: Colors.white, fontWeight: FontWeight.w700),
                           ),
                         ],
@@ -408,7 +408,7 @@ class InicioPage extends StatelessWidget {
                                         ),
                                         child: Center(
                                           child: Text(
-                                            'Historial Clínico',
+                                            'Historias',
                                             style: TextStyle(fontSize: responsive.ip(2.5), fontWeight: FontWeight.w600),
                                           ),
                                         ),
