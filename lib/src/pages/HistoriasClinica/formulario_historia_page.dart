@@ -18,6 +18,15 @@ class FormularioHistoriaPage extends StatefulWidget {
 
 class _FormularioHistoriaPageState extends State<FormularioHistoriaPage> {
   final _changeData = ChangeExpanded();
+
+  TextEditingController _direccionController = TextEditingController();
+  TextEditingController _celularController = TextEditingController();
+  TextEditingController _nacimientoController = TextEditingController();
+  TextEditingController _aflController = TextEditingController();
+  TextEditingController _acompController = TextEditingController();
+  TextEditingController _referenciaController = TextEditingController();
+  TextEditingController _nroReferenciaController = TextEditingController();
+
   TextEditingController _presionArterialController = TextEditingController();
   TextEditingController _tallaController = TextEditingController();
   TextEditingController _pesoController = TextEditingController();
@@ -47,6 +56,13 @@ class _FormularioHistoriaPageState extends State<FormularioHistoriaPage> {
   TextEditingController _planController = TextEditingController();
   TextEditingController _observacionController = TextEditingController();
   TextEditingController _citaController = TextEditingController();
+
+  FocusNode _focusDireccion = FocusNode();
+  FocusNode _focusCelular = FocusNode();
+  FocusNode _focusAFL = FocusNode();
+  FocusNode _focusAcomp = FocusNode();
+  FocusNode _focusReferencia = FocusNode();
+  FocusNode _focusNroReferencia = FocusNode();
 
   FocusNode _focusPresion = FocusNode();
   FocusNode _focusTalla = FocusNode();
@@ -85,6 +101,8 @@ class _FormularioHistoriaPageState extends State<FormularioHistoriaPage> {
     'r',
   ];
 
+  int ingreso = 0;
+
   bool change = false;
   @override
   Widget build(BuildContext context) {
@@ -121,6 +139,12 @@ class _FormularioHistoriaPageState extends State<FormularioHistoriaPage> {
         decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(40), topRight: Radius.circular(40)), color: Colors.white),
         child: KeyboardActions(
           config: KeyboardActionsConfig(keyboardSeparatorColor: Colors.white, keyboardBarColor: Colors.white, actions: [
+            KeyboardActionsItem(focusNode: _focusDireccion),
+            KeyboardActionsItem(focusNode: _focusCelular),
+            KeyboardActionsItem(focusNode: _focusAFL),
+            KeyboardActionsItem(focusNode: _focusAcomp),
+            KeyboardActionsItem(focusNode: _focusReferencia),
+            KeyboardActionsItem(focusNode: _focusNroReferencia),
             KeyboardActionsItem(focusNode: _focusPeso),
             KeyboardActionsItem(focusNode: _focusTalla),
             KeyboardActionsItem(focusNode: _focusIMC),
@@ -129,6 +153,19 @@ class _FormularioHistoriaPageState extends State<FormularioHistoriaPage> {
             KeyboardActionsItem(focusNode: _focusFR),
             KeyboardActionsItem(focusNode: _focusTemperatura),
             KeyboardActionsItem(focusNode: _focusSPO2),
+            KeyboardActionsItem(focusNode: _focusSintomas),
+            KeyboardActionsItem(focusNode: _focusTiempoEn),
+            KeyboardActionsItem(focusNode: _focusRelato),
+            KeyboardActionsItem(focusNode: _focusAntecedentes),
+            KeyboardActionsItem(focusNode: _focusDiagnostico),
+            KeyboardActionsItem(focusNode: _focusCIE10),
+            KeyboardActionsItem(focusNode: _focusExamen),
+            KeyboardActionsItem(focusNode: _focusFarmaco),
+            KeyboardActionsItem(focusNode: _focusDosis),
+            KeyboardActionsItem(focusNode: _focusDuracion),
+            KeyboardActionsItem(focusNode: _focusAnanmesis),
+            KeyboardActionsItem(focusNode: _focusPlan),
+            KeyboardActionsItem(focusNode: _focusObservacion),
           ]),
           child: SingleChildScrollView(
             child: Column(
@@ -244,7 +281,7 @@ class _FormularioHistoriaPageState extends State<FormularioHistoriaPage> {
                 ),
                 Container(
                   margin: EdgeInsets.symmetric(horizontal: responsive.wp(3), vertical: responsive.hp(1)),
-                  height: responsive.hp(10),
+                  width: double.infinity,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     color: Colors.white,
@@ -259,43 +296,84 @@ class _FormularioHistoriaPageState extends State<FormularioHistoriaPage> {
                   ),
                   child: Padding(
                     padding: EdgeInsets.all(10),
-                    child: Row(
+                    child: Column(
                       children: [
-                        CircleAvatar(
-                          maxRadius: responsive.ip(5),
-                          backgroundColor: ColorsGrid.colorsDark[Random().nextInt(ColorsGrid.colorsDark.length)],
-                          child: Image.asset(
-                            (pacientes[widget.index]['sexo'] == '1') ? 'assets/img/chico.png' : 'assets/img/mujer.png',
-                            fit: BoxFit.cover,
-                          ),
+                        Text(
+                          'Ingreso',
+                          style: TextStyle(fontSize: responsive.ip(1.7), color: ColorsApp.grey),
                         ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              '${pacientes[widget.index]['name']}',
-                              style: TextStyle(fontSize: responsive.ip(2.1), color: ColorsApp.black, fontWeight: FontWeight.w500),
-                            ),
-                            SizedBox(
-                              height: responsive.hp(1),
-                            ),
-                            Text(
-                              'DNI: ${pacientes[widget.index]['dni']} | ${pacientes[widget.index]['age']} años',
-                              style: TextStyle(fontSize: responsive.ip(1.7), color: ColorsApp.grey),
-                            ),
-                          ],
+                        SizedBox(
+                          height: responsive.hp(1),
                         ),
-                        Spacer(),
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(
-                              (pacientes[widget.index]['sexo'] == '1') ? FontAwesomeIcons.male : FontAwesomeIcons.female,
-                              color: (pacientes[widget.index]['sexo'] == '1') ? Colors.blueAccent : Colors.pinkAccent,
-                              size: responsive.ip(3.5),
+                            InkWell(
+                              onTap: () {
+                                setState(() {
+                                  ingreso = 1;
+                                });
+                              },
+                              child: Container(
+                                margin: EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: (ingreso == 1) ? ColorsApp.redOrange : Colors.white,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      blurRadius: 5,
+                                      color: Colors.grey.withOpacity(0.5),
+                                      spreadRadius: 1,
+                                      offset: Offset(0, 1),
+                                    ),
+                                  ],
+                                ),
+                                child: Padding(
+                                  padding: EdgeInsets.all(10),
+                                  child: Text(
+                                    'Emergencia',
+                                    style: TextStyle(
+                                        color: (ingreso == 1) ? Colors.white : Colors.black,
+                                        fontSize: responsive.ip(1.9),
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                ),
+                              ),
                             ),
                             SizedBox(
-                              width: responsive.wp(1),
+                              width: responsive.wp(5),
                             ),
+                            InkWell(
+                              onTap: () {
+                                setState(() {
+                                  ingreso = 2;
+                                });
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: (ingreso == 2) ? ColorsApp.blueClinica : Colors.white,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      blurRadius: 5,
+                                      color: Colors.grey.withOpacity(0.5),
+                                      spreadRadius: 1,
+                                      offset: Offset(0, 1),
+                                    ),
+                                  ],
+                                ),
+                                child: Padding(
+                                  padding: EdgeInsets.all(10),
+                                  child: Text(
+                                    'Consulta Médica',
+                                    style: TextStyle(
+                                        color: (ingreso == 2) ? Colors.white : Colors.black,
+                                        fontSize: responsive.ip(1.9),
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                ),
+                              ),
+                            )
                           ],
                         )
                       ],
@@ -309,7 +387,28 @@ class _FormularioHistoriaPageState extends State<FormularioHistoriaPage> {
                         children: [
                           ExpansionTile(
                             onExpansionChanged: (valor) {
-                              _changeData.onChangeValue(valor, false, false, false, false, false);
+                              _changeData.onChangeValue(valor, false, false, false, false, false, false);
+                            },
+                            title: Text(
+                              'Datos Personales del Paciente',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                                fontSize: responsive.ip(1.8),
+                              ),
+                            ),
+                            trailing: Container(
+                              margin: EdgeInsets.symmetric(vertical: responsive.hp(.5)),
+                              child: Icon(
+                                _changeData.vitales ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+                                color: ColorsApp.blueClinica,
+                              ),
+                            ),
+                            children: [_datosPaciente(responsive)],
+                          ),
+                          ExpansionTile(
+                            onExpansionChanged: (valor) {
+                              _changeData.onChangeValue(false, valor, false, false, false, false, false);
                             },
                             title: Text(
                               'Funciones Vitales',
@@ -330,7 +429,7 @@ class _FormularioHistoriaPageState extends State<FormularioHistoriaPage> {
                           ),
                           ExpansionTile(
                             onExpansionChanged: (valor) {
-                              _changeData.onChangeValue(false, valor, false, false, false, false);
+                              _changeData.onChangeValue(false, false, valor, false, false, false, false);
                             },
                             title: Text(
                               'Enfermedad Actual',
@@ -351,7 +450,7 @@ class _FormularioHistoriaPageState extends State<FormularioHistoriaPage> {
                           ),
                           ExpansionTile(
                             onExpansionChanged: (valor) {
-                              _changeData.onChangeValue(false, false, valor, false, false, false);
+                              _changeData.onChangeValue(false, false, false, valor, false, false, false);
                             },
                             title: Text(
                               'Diagnóstico',
@@ -372,7 +471,7 @@ class _FormularioHistoriaPageState extends State<FormularioHistoriaPage> {
                           ),
                           ExpansionTile(
                             onExpansionChanged: (valor) {
-                              _changeData.onChangeValue(false, false, false, valor, false, false);
+                              _changeData.onChangeValue(false, false, false, false, valor, false, false);
                             },
                             title: Text(
                               'Exámenes',
@@ -393,7 +492,7 @@ class _FormularioHistoriaPageState extends State<FormularioHistoriaPage> {
                           ),
                           ExpansionTile(
                             onExpansionChanged: (valor) {
-                              _changeData.onChangeValue(false, false, false, false, valor, false);
+                              _changeData.onChangeValue(false, false, false, false, false, valor, false);
                             },
                             title: Text(
                               'Medicamentos y Tratamiento',
@@ -414,7 +513,7 @@ class _FormularioHistoriaPageState extends State<FormularioHistoriaPage> {
                           ),
                           ExpansionTile(
                             onExpansionChanged: (valor) {
-                              _changeData.onChangeValue(false, false, false, false, false, valor);
+                              _changeData.onChangeValue(false, false, false, false, false, false, valor);
                             },
                             title: Text(
                               'Plan de trabajo y Tratamiento',
@@ -463,6 +562,256 @@ class _FormularioHistoriaPageState extends State<FormularioHistoriaPage> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _datosPaciente(Responsive responsive) {
+    return Column(
+      children: [
+        Container(
+          margin: EdgeInsets.symmetric(horizontal: responsive.wp(3), vertical: responsive.hp(1)),
+          height: responsive.hp(10),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                blurRadius: 5,
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 1,
+                offset: Offset(0, 1),
+              ),
+            ],
+          ),
+          child: Padding(
+            padding: EdgeInsets.all(10),
+            child: Row(
+              children: [
+                CircleAvatar(
+                  maxRadius: responsive.ip(5),
+                  backgroundColor: ColorsGrid.colorsDark[Random().nextInt(ColorsGrid.colorsDark.length)],
+                  child: Image.asset(
+                    (pacientes[widget.index]['sexo'] == '1') ? 'assets/img/chico.png' : 'assets/img/mujer.png',
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '${pacientes[widget.index]['name']}',
+                      style: TextStyle(fontSize: responsive.ip(2.1), color: ColorsApp.black, fontWeight: FontWeight.w500),
+                    ),
+                    SizedBox(
+                      height: responsive.hp(1),
+                    ),
+                    Text(
+                      'DNI: ${pacientes[widget.index]['dni']} | ${pacientes[widget.index]['age']} años',
+                      style: TextStyle(fontSize: responsive.ip(1.7), color: ColorsApp.grey),
+                    ),
+                  ],
+                ),
+                Spacer(),
+                Row(
+                  children: [
+                    Icon(
+                      (pacientes[widget.index]['sexo'] == '1') ? FontAwesomeIcons.male : FontAwesomeIcons.female,
+                      color: (pacientes[widget.index]['sexo'] == '1') ? Colors.blueAccent : Colors.pinkAccent,
+                      size: responsive.ip(3.5),
+                    ),
+                    SizedBox(
+                      width: responsive.wp(1),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ),
+        ),
+        Container(
+          margin: EdgeInsets.symmetric(horizontal: responsive.wp(3), vertical: responsive.hp(1)),
+          width: double.infinity,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                blurRadius: 5,
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 1,
+                offset: Offset(0, 1),
+              ),
+            ],
+          ),
+          child: Padding(
+            padding: EdgeInsets.all(10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Fecha nacimiento'),
+                SizedBox(
+                  height: responsive.hp(0.5),
+                ),
+                _selectDate(responsive, _nacimientoController, 'Fecha'),
+              ],
+            ),
+          ),
+        ),
+        Container(
+          margin: EdgeInsets.symmetric(horizontal: responsive.wp(3), vertical: responsive.hp(1)),
+          width: double.infinity,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                blurRadius: 5,
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 1,
+                offset: Offset(0, 1),
+              ),
+            ],
+          ),
+          child: Padding(
+            padding: EdgeInsets.all(10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Dirección'),
+                SizedBox(
+                  height: responsive.hp(0.5),
+                ),
+                _imputTextMultiline(responsive, _focusDireccion, '', _direccionController, 1, 5),
+              ],
+            ),
+          ),
+        ),
+        Container(
+          margin: EdgeInsets.symmetric(horizontal: responsive.wp(3), vertical: responsive.hp(1.5)),
+          width: double.infinity,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                blurRadius: 5,
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 1,
+                offset: Offset(0, 1),
+              ),
+            ],
+          ),
+          child: Padding(
+            padding: EdgeInsets.all(10),
+            child: Row(
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Celular'),
+                    _imputNumber(responsive, _focusCelular, '', _celularController),
+                  ],
+                ),
+                Spacer(),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('C. AFL'),
+                    _imputNumber(responsive, _focusAFL, '', _aflController),
+                  ],
+                )
+              ],
+            ),
+          ),
+        ),
+        Container(
+          margin: EdgeInsets.symmetric(horizontal: responsive.wp(3), vertical: responsive.hp(1)),
+          width: double.infinity,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                blurRadius: 5,
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 1,
+                offset: Offset(0, 1),
+              ),
+            ],
+          ),
+          child: Padding(
+            padding: EdgeInsets.all(10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Acompañante'),
+                SizedBox(
+                  height: responsive.hp(0.5),
+                ),
+                _imputTextMultiline(responsive, _focusAcomp, '', _acompController, 1, 5),
+              ],
+            ),
+          ),
+        ),
+        Container(
+          margin: EdgeInsets.symmetric(horizontal: responsive.wp(3), vertical: responsive.hp(1)),
+          width: double.infinity,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                blurRadius: 5,
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 1,
+                offset: Offset(0, 1),
+              ),
+            ],
+          ),
+          child: Padding(
+            padding: EdgeInsets.all(10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Referencia'),
+                SizedBox(
+                  height: responsive.hp(0.5),
+                ),
+                _imputTextMultiline(responsive, _focusReferencia, '', _referenciaController, 1, 5),
+              ],
+            ),
+          ),
+        ),
+        Container(
+          margin: EdgeInsets.symmetric(horizontal: responsive.wp(3), vertical: responsive.hp(1)),
+          width: double.infinity,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                blurRadius: 5,
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 1,
+                offset: Offset(0, 1),
+              ),
+            ],
+          ),
+          child: Padding(
+            padding: EdgeInsets.all(10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Nro Referencia'),
+                SizedBox(
+                  height: responsive.hp(0.5),
+                ),
+                _imputTextMultiline(responsive, _focusNroReferencia, '', _nroReferenciaController, 1, 5),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -1479,6 +1828,7 @@ class _FormularioHistoriaPageState extends State<FormularioHistoriaPage> {
 }
 
 class ChangeExpanded extends ChangeNotifier {
+  bool datos = false;
   bool vitales = false;
   bool enfermedad = false;
   bool diagnostico = false;
@@ -1486,7 +1836,8 @@ class ChangeExpanded extends ChangeNotifier {
   bool medicamentos = false;
   bool trabajo = false;
 
-  void onChangeValue(bool fv, bool ea, bool d, bool e, bool m, bool t) {
+  void onChangeValue(bool data, bool fv, bool ea, bool d, bool e, bool m, bool t) {
+    datos = data;
     vitales = fv;
     enfermedad = ea;
     diagnostico = d;
