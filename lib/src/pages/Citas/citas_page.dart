@@ -95,68 +95,66 @@ class CitasPage extends StatelessWidget {
                             ),
                           ],
                         ),
-                        child: Padding(
-                          padding: EdgeInsets.all(10),
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                height: responsive.hp(1),
-                              ),
-                              Container(
-                                height: responsive.hp(15),
-                                child: Stack(
-                                  children: [
-                                    Positioned(
-                                      bottom: 0,
-                                      left: 0,
-                                      right: 0,
-                                      child: CircleAvatar(
-                                        maxRadius: responsive.ip(6),
-                                        backgroundColor: ColorsGrid.colorsDark[Random().nextInt(ColorsGrid.colorsDark.length)],
-                                      ),
-                                    ),
-                                    Positioned(
-                                      child: Container(
-                                        height: responsive.ip(10),
-                                        child: Image.asset(
-                                          medicos[index]['icon'],
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(
-                                height: responsive.hp(3),
-                              ),
-                              Text(
-                                '${medicos[index]['name']}',
-                                style: TextStyle(fontSize: responsive.ip(2.1), color: ColorsApp.black, fontWeight: FontWeight.w500),
-                              ),
-                              SizedBox(
-                                height: responsive.hp(1),
-                              ),
-                              Row(
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              height: responsive.hp(1),
+                            ),
+                            Container(
+                              height: responsive.hp(10),
+                              child: Stack(
                                 children: [
-                                  Spacer(),
-                                  Icon(
-                                    FontAwesomeIcons.stethoscope,
-                                    color: ColorsApp.greenClinica,
-                                    size: responsive.ip(2),
+                                  Positioned(
+                                    bottom: 0,
+                                    left: 0,
+                                    right: 0,
+                                    top: 0,
+                                    child: CircleAvatar(
+                                      maxRadius: responsive.ip(6),
+                                      backgroundColor: ColorsGrid.colorsDark[Random().nextInt(ColorsGrid.colorsDark.length)],
+                                    ),
                                   ),
-                                  SizedBox(
-                                    width: responsive.wp(2),
+                                  Positioned(
+                                    child: Container(
+                                      height: responsive.ip(10),
+                                      child: Image.asset(
+                                        medicos[index]['icon'],
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
                                   ),
-                                  Text(
-                                    '${medicos[index]['servicio']}',
-                                    style: TextStyle(fontSize: responsive.ip(1.8), color: ColorsApp.grey),
-                                  ),
-                                  Spacer(),
                                 ],
-                              )
-                            ],
-                          ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: responsive.hp(3),
+                            ),
+                            Text(
+                              '${medicos[index]['name']}',
+                              style: TextStyle(fontSize: responsive.ip(2.1), color: ColorsApp.black, fontWeight: FontWeight.w500),
+                            ),
+                            SizedBox(
+                              height: responsive.hp(1),
+                            ),
+                            Row(
+                              children: [
+                                Spacer(),
+                                Icon(
+                                  FontAwesomeIcons.stethoscope,
+                                  color: ColorsApp.greenClinica,
+                                  size: responsive.ip(2),
+                                ),
+                                SizedBox(
+                                  width: responsive.wp(2),
+                                ),
+                                Text(
+                                  '${medicos[index]['servicio']}',
+                                  style: TextStyle(fontSize: responsive.ip(1.8), color: ColorsApp.grey),
+                                ),
+                                Spacer(),
+                              ],
+                            )
+                          ],
                         )),
                   );
                 },

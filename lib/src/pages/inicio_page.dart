@@ -1,5 +1,6 @@
 import 'package:clinica_app/src/pages/Citas/citas_page.dart';
 import 'package:clinica_app/src/pages/HistoriasClinica/historia_page.dart';
+import 'package:clinica_app/src/pages/InfoUser/info_user.page.dart';
 import 'package:clinica_app/src/pages/Reportes/reportes_page.dart';
 import 'package:clinica_app/src/pages/Triaje/triaje_page.dart';
 import 'package:clinica_app/src/theme/theme.dart';
@@ -126,26 +127,66 @@ class InicioPage extends StatelessWidget {
                   padding: EdgeInsets.symmetric(vertical: responsive.hp(1)),
                   child: Row(
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Bienvenido",
-                            style: TextStyle(fontSize: responsive.ip(2), color: Colors.white, fontWeight: FontWeight.w500),
-                          ),
-                          Text(
-                            "Andrés Tapullima",
-                            style: TextStyle(fontSize: responsive.ip(2.5), color: Colors.white, fontWeight: FontWeight.w700),
-                          ),
-                        ],
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            PageRouteBuilder(
+                              opaque: false,
+                              transitionDuration: const Duration(milliseconds: 400),
+                              pageBuilder: (context, animation, secondaryAnimation) {
+                                return InfoUserPage();
+                              },
+                              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                return FadeTransition(
+                                  opacity: animation,
+                                  child: child,
+                                );
+                              },
+                            ),
+                          );
+                        },
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Bienvenido",
+                              style: TextStyle(fontSize: responsive.ip(2), color: Colors.white, fontWeight: FontWeight.w500),
+                            ),
+                            Text(
+                              "Patricio Lopez",
+                              style: TextStyle(fontSize: responsive.ip(2.5), color: Colors.white, fontWeight: FontWeight.w700),
+                            ),
+                          ],
+                        ),
                       ),
                       Spacer(),
-                      Container(
-                        height: responsive.ip(6),
-                        decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white),
-                        child: Image.asset(
-                          'assets/img/chico.png',
-                          fit: BoxFit.cover,
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            PageRouteBuilder(
+                              opaque: false,
+                              transitionDuration: const Duration(milliseconds: 400),
+                              pageBuilder: (context, animation, secondaryAnimation) {
+                                return InfoUserPage();
+                              },
+                              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                return FadeTransition(
+                                  opacity: animation,
+                                  child: child,
+                                );
+                              },
+                            ),
+                          );
+                        },
+                        child: Container(
+                          height: responsive.ip(6),
+                          decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white),
+                          child: Image.asset(
+                            'assets/img/chico.png',
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                     ],
@@ -408,7 +449,7 @@ class InicioPage extends StatelessWidget {
                                         ),
                                         child: Center(
                                           child: Text(
-                                            'Historial Clínico',
+                                            'Historias',
                                             style: TextStyle(fontSize: responsive.ip(2.5), fontWeight: FontWeight.w600),
                                           ),
                                         ),

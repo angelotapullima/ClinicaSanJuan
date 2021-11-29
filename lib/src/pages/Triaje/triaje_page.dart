@@ -58,7 +58,9 @@ class TriajePage extends StatelessWidget {
                           opaque: false,
                           transitionDuration: const Duration(milliseconds: 400),
                           pageBuilder: (context, animation, secondaryAnimation) {
-                            return FormularioTriajePage();
+                            return FormularioTriajePage(
+                              index: index,
+                            );
                           },
                           transitionsBuilder: (context, animation, secondaryAnimation, child) {
                             return FadeTransition(
@@ -91,10 +93,9 @@ class TriajePage extends StatelessWidget {
                             CircleAvatar(
                               maxRadius: responsive.ip(5),
                               backgroundColor: ColorsGrid.colorsDark[Random().nextInt(ColorsGrid.colorsDark.length)],
-                              child: Icon(
-                                pacientes[index]['icon'],
-                                color: Colors.white,
-                                size: responsive.ip(3),
+                              child: Image.asset(
+                                (pacientes[index]['sexo'] == '1') ? 'assets/img/chico.png' : 'assets/img/mujer.png',
+                                fit: BoxFit.cover,
                               ),
                             ),
                             Column(
